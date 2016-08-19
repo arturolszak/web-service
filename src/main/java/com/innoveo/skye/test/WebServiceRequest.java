@@ -10,37 +10,34 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-        "idRepeated",
+        "testMappingObjectMultiResource",
+        "testMappingObjectMultiResourceOutput",
 })
 @XmlRootElement(name = "webServiceRequest")
 public class WebServiceRequest {
 
     @XmlElement(required = true)
-    protected boolean idRepeated;
+    protected TestMappingObjectMultiResource testMappingObjectMultiResource;
 
-    /**
-     * Gets the value of the idRepeated property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Customer }
-     *
-     */
-    public boolean getIdRepeated() {
-        return idRepeated;
+    @XmlElement(required = true)
+    protected TestMappingObjectMultiResource testMappingObjectMultiResourceOutput;
+
+    public TestMappingObjectMultiResource getTestMappingObjectMultiResource() {
+        return testMappingObjectMultiResource;
     }
 
-    /**
-     * Sets the value of the idRepeated property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Customer }
-     *
-     */
-    public void setIdRepeated(boolean value) {
-        this.idRepeated = value;
+    public void setTestMappingObjectMultiResource(TestMappingObjectMultiResource testMappingObjectMultiResource) {
+        this.testMappingObjectMultiResource = testMappingObjectMultiResource;
     }
+
+    public TestMappingObjectMultiResource getTestMappingObjectMultiResourceOutput() {
+        return testMappingObjectMultiResourceOutput;
+    }
+
+    public void setTestMappingObjectMultiResourceOutput(TestMappingObjectMultiResource testMappingObjectMultiResourceOutput) {
+        this.testMappingObjectMultiResourceOutput = testMappingObjectMultiResourceOutput;
+    }
+
 
 }
 

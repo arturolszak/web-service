@@ -1,4 +1,4 @@
-@XmlSchema(namespace = "http://www.example.org/customer", elementFormDefault = XmlNsForm.QUALIFIED)
+@XmlSchema(namespace = "http://www.innoveo.com/recursosmultiples", elementFormDefault = XmlNsForm.QUALIFIED)
 package com.innoveo.skye.test;
 
 import javax.xml.bind.annotation.XmlNsForm;

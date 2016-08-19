@@ -1,0 +1,33 @@
+<xs:schema xmlns:tns="http://www.innoveo.com/recursosmultiples" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0" targetNamespace="http://www.innoveo.com/recursosmultiples">
+    <xs:element name="webServiceRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="testMappingObjectMultiResource" type="tns:testMappingObjectMultiResource"/>
+                <xs:element name="testMappingObjectMultiResourceOutput" type="tns:testMappingObjectMultiResource"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="webServiceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="testMappingObjectMultiResource" type="tns:testMappingObjectMultiResource"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="testMappingObjectMultiResource">
+        <xs:sequence>
+            <xs:element name="multiResources" type="tns:multiResources" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="multiResources">
+        <xs:sequence>
+            <xs:element name="multiResource" type="tns:multiResource" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="multiResource">
+        <xs:sequence>
+            <xs:element name="data" type="xs:base64Binary" minOccurs="0"/>
+            <xs:element name="filename" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

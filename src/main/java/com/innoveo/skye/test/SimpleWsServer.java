@@ -6,8 +6,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.Endpoint;
-
-import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import static javax.jws.soap.SOAPBinding.Style.DOCUMENT;
@@ -23,7 +22,7 @@ public class SimpleWsServer {
         System.out.println("Waiting for requests...");
     }
 
-    @WebService(targetNamespace = "http://www.example.org/customer")
+    @WebService(targetNamespace = "http://www.innoveo.com/recursosmultiples")
     @SOAPBinding(style = DOCUMENT, use = LITERAL, parameterStyle = SOAPBinding.ParameterStyle.BARE)
     public static class DynamicClientModelWebServiceEndpoint {
         public static int invocationCount = 0;
@@ -35,54 +34,41 @@ public class SimpleWsServer {
         @WebMethod(operationName = "launch", action = "launch")
         public @WebResult(name = "webServiceResponse")
         WebServiceResponse launch(@WebParam(name = "webServiceRequest") WebServiceRequest webServiceRequest) {
-            System.out.println("REQUEST: Received launch request. Echoing back with resource object");
+            System.out.println("REQUEST: Received launch request.");
             invocationCount++;
 
-            WebServiceResponse launchResponse = createResponseData(webServiceRequest.getIdRepeated());
-            launchResponse.setResourceObject(new byte[]{1, 2, 3});
+            WebServiceResponse launchResponse = processRequestAndCreateResponse(webServiceRequest);
 
             return launchResponse;
         }
 
-        private WebServiceResponse createResponseData(boolean idRepeated) {
+        private WebServiceResponse processRequestAndCreateResponse(WebServiceRequest request) {
+
+            //process request
+            List<TestMappingObjectMultiResource.MultiResource> multiResource = request.getTestMappingObjectMultiResource().getMultiResources().getMultiResource();
+            for (TestMappingObjectMultiResource.MultiResource resource : multiResource) {
+                String data = Base64.getEncoder().encodeToString(resource.getData());
+                data = (data.length() <= 50 ? data : data.substring(0, 50) + "...");
+                System.out.println("* Received a resource: "  + resource.getFilename() + "; " + data);
+            }
+
+            //generate response
             WebServiceResponse webServiceResponse = new WebServiceResponse();
-            webServiceResponse.setCustomerList(createCustomersData(idRepeated));
+
+            TestMappingObjectMultiResource testMappingObjectMultiResource = new TestMappingObjectMultiResource();
+            webServiceResponse.setTestMappingObjectMultiResource(testMappingObjectMultiResource);
+
+            TestMappingObjectMultiResource.MultiResources multiResources = new TestMappingObjectMultiResource.MultiResources();
+            testMappingObjectMultiResource.setMultiResources(multiResources);
+
+            for (TestMappingObjectMultiResource.MultiResource resource : request.getTestMappingObjectMultiResourceOutput().getMultiResources().getMultiResource()) {
+                multiResources.getMultiResource().add(new TestMappingObjectMultiResource.MultiResource(resource.getFilename(), resource.getData()));
+                String data = Base64.getEncoder().encodeToString(resource.getData());
+                data = (data.length() <= 50 ? data : data.substring(0, 50) + "...");
+                System.out.println("+ Adding a resource to the response: "  + resource.getFilename() + "; " + data);
+            }
 
             return webServiceResponse;
-        }
-
-        private List<Customer> createCustomersData(boolean idRepeated) {
-            if (idRepeated) {
-                return createResponseDataWithRepeatedId();
-            }
-            return createResponseDataWithUniqueId();
-        }
-
-        private List<Customer> createResponseDataWithRepeatedId() {
-            List<Customer> customerList = new ArrayList<>();
-            customerList.add(createCustomer("id1", "name1", "address1"));
-            customerList.add(createCustomer("id1", "name2", "address2"));
-            customerList.add(createCustomer("id3", "name3", "address3"));
-
-            return customerList;
-        }
-
-        private List<Customer> createResponseDataWithUniqueId() {
-            List<Customer> customerList = new ArrayList<>();
-            customerList.add(createCustomer("id1", "name1", "address1"));
-            customerList.add(createCustomer("id2", "name2", "address2"));
-            customerList.add(createCustomer("id3", "name3", "address3"));
-
-            return customerList;
-        }
-
-        private Customer createCustomer(String id, String name, String address) {
-            Customer customer = new Customer();
-            customer.setId(id);
-            customer.setName(name);
-            customer.setAddress(address);
-
-            return customer;
         }
 
     }

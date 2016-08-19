@@ -1,0 +1,27 @@
+<xs:schema xmlns:tns="http://www.innoveo.com/recursosmultiples" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0" targetNamespace="http://www.innoveo.com/recursosmultiples">
+    <xs:element name="webServiceRequest2">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="testMappingObjectMultiResource" type="tns:testMappingObjectMultiResourceWithoutResourceItemWrapper"/>
+                <xs:element name="testMappingObjectMultiResourceOutput" type="tns:testMappingObjectMultiResourceWithoutResourceItemWrapper"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="webServiceResponse2">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="testMappingObjectMultiResource" type="tns:testMappingObjectMultiResourceWithoutResourceItemWrapper"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="testMappingObjectMultiResourceWithoutResourceItemWrapper">
+        <xs:sequence>
+            <xs:element name="multiResources" type="tns:multiResourcesOnlyData" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="multiResourcesOnlyData">
+        <xs:sequence>
+            <xs:element name="multiResource" type="xs:base64Binary" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

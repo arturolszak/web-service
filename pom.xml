@@ -11,7 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javac.target>1.7</javac.target>
+        <javac.target>1.8</javac.target>
         <uberjar.name>simple-ws-service</uberjar.name>
         <jackson.version>2.3.2</jackson.version>
     </properties>
@@ -32,7 +32,7 @@
                         </goals>
                         <configuration>
                             <schemaDirectory>${basedir}/src/main/resources/schema</schemaDirectory>
-                            <generatePackage>com.innoveo.skye.test.ws.generic</generatePackage>
+                            <generatePackage>com.innoveo.skye.test.ws</generatePackage>
                             <args>
                                 <arg>-no-header</arg>
                             </args>
@@ -84,6 +84,25 @@
                                 </filter>
                             </filters>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>etc/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
